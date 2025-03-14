@@ -10,6 +10,15 @@ internal sealed class DotnetTarget : ITarget
             Execute);
 
     private static async Task Execute()
-        => await DotnetCli.Run("build", "/warnaserror")
-        .ConfigureAwait(false);
+    {
+        var arguments = new List<string>();
+
+        if (!EnvironmentVariables.LocalBuild)
+        {
+            arguments.Add("/warnaserror");
+        }
+
+        await DotnetCli.Run("build", [.. arguments])
+            .ConfigureAwait(false);
+    }
 }
