@@ -6,6 +6,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.SmartEnum" />
     <PackageReference Include="SimpleExec" />
   </ItemGroup>
 
