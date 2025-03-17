@@ -6,4 +6,8 @@
     <InternalsVisibleTo Include="Gint.Testbed" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SimpleExec" />
+  </ItemGroup>
+
 </Project>
