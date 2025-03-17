@@ -11,4 +11,17 @@
     <PackageReference Include="SimpleExec" />
   </ItemGroup>
 
+  <ItemGroup Label="Resources">
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <None Update="Properties\Messages.Designer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Update="Properties\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.Designer.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,7 @@
+<#
+    Session = new System.Collections.Generic.Dictionary<string, object>();
+    Session["AccessModifier"] = "internal";
+    Session["ResourceFile"] = "Messages.resx";
+    Session["ResourceNamespace"] = "Gint.Core.Properties";
+#>
+<#@ include file="..\..\..\tools\Resources.tt" #>

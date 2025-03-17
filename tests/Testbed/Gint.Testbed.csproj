@@ -1,6 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Gint.Console.Facts" />
+    <InternalsVisibleTo Include="Gint.Core.Facts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Gint.Core.csproj" />
   </ItemGroup>
 
