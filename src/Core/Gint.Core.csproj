@@ -5,4 +5,8 @@
     <InternalsVisibleTo Include="Gint.Core.Facts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SimpleExec" />
+  </ItemGroup>
+
 </Project>
