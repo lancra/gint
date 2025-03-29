@@ -3,6 +3,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
     <InternalsVisibleTo Include="Gint.Core.Facts" />
+    <InternalsVisibleTo Include="Gint.Testbed" />
   </ItemGroup>
 
 </Project>

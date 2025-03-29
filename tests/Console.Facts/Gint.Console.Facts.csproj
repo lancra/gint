@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Console\Gint.Console.csproj" />
+    <ProjectReference Include="..\Testbed\Gint.Testbed.csproj" />
   </ItemGroup>
 
 </Project>
