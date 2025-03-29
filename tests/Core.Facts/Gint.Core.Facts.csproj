@@ -5,4 +5,8 @@
     <ProjectReference Include="..\Testbed\Gint.Testbed.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
 </Project>

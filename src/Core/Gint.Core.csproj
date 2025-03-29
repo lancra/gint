@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.SmartEnum" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="SimpleExec" />
   </ItemGroup>
 
