@@ -5,7 +5,7 @@ namespace Gint.Dev;
 internal static class DotnetCli
 {
     private static readonly CompositeFormat ArgumentsFormat =
-        CompositeFormat.Parse($"{{0}} --configuration Release --verbosity minimal --nologo{{1}}");
+        CompositeFormat.Parse($"{{0}} --configuration {{1}} --verbosity minimal --nologo{{2}}");
 
     public static async Task Run(string command, params string[] args)
     {
@@ -15,7 +15,8 @@ internal static class DotnetCli
             additionalArgumentsString = $" {string.Join(' ', args)}";
         }
 
-        var argumentsString = string.Format(null, ArgumentsFormat, command, additionalArgumentsString);
+        var configuration = EnvironmentVariables.BuildConfiguration.Value ?? "Release";
+        var argumentsString = string.Format(null, ArgumentsFormat, command, configuration, additionalArgumentsString);
         await SimpleExec.Command.RunAsync("dotnet", argumentsString)
             .ConfigureAwait(false);
     }
