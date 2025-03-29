@@ -16,6 +16,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'a',
         "Add changes to the staging area.",
         OperationKind.Write,
+        typeof(AddOperation),
         areas: [ChangeArea.Working]);
 
     /// <summary>
@@ -26,6 +27,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'b',
         "Break changes into separate files.",
         OperationKind.Control,
+        typeof(BreakOperation),
         scopes: [OperationScope.All],
         onFilter: filter => filter.Changes.Files.Count > 1);
 
@@ -37,6 +39,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'c',
         "Clean untracked changes.",
         OperationKind.Write,
+        typeof(CleanOperation),
         indicators: [ChangeIndicator.Untracked]);
 
     /// <summary>
@@ -47,6 +50,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'd',
         "Show the differences introduced by changes.",
         OperationKind.Read,
+        typeof(DiffOperation),
         areas: ChangeArea.List);
 
     /// <summary>
@@ -57,6 +61,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'f',
         "Restore a fragment of changes.",
         OperationKind.Write,
+        typeof(FragmentalRestoreOperation),
         areas: ChangeArea.List);
 
     /// <summary>
@@ -66,7 +71,8 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         "Help",
         '?',
         "Print the application help.",
-        OperationKind.Control);
+        OperationKind.Control,
+        typeof(HelpOperation));
 
     /// <summary>
     /// Specifies that the operation will perform no action for the changes.
@@ -76,6 +82,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'i',
         "Perform no action for the changes.",
         OperationKind.Control,
+        typeof(IgnoreOperation),
         scopes: [OperationScope.File]);
 
     /// <summary>
@@ -86,6 +93,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'n',
         "Mark changes as intended to be added.",
         OperationKind.Write,
+        typeof(IntendToAddOperation),
         indicators: [ChangeIndicator.Untracked]);
 
     /// <summary>
@@ -96,6 +104,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'p',
         "Patch changes to the staging area.",
         OperationKind.Write,
+        typeof(PatchOperation),
         areas: [ChangeArea.Working]);
 
     /// <summary>
@@ -105,7 +114,8 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         "Quit",
         'q',
         "Quit the application.",
-        OperationKind.Control);
+        OperationKind.Control,
+        typeof(QuitOperation));
 
     /// <summary>
     /// Specifies that the operation will restore changes.
@@ -115,6 +125,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         'r',
         "Restore changes.",
         OperationKind.Write,
+        typeof(RestoreOperation),
         areas: ChangeArea.List);
 
     /// <summary>
@@ -124,13 +135,15 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
         "Status",
         's',
         "Show the status of changes.",
-        OperationKind.Read);
+        OperationKind.Read,
+        typeof(StatusOperation));
 
     private OperationDescriptor(
         string name,
         char value,
         string description,
         OperationKind kind,
+        Type type,
         IReadOnlyCollection<OperationScope>? scopes = default,
         IReadOnlyCollection<ChangeArea>? areas = default,
         IReadOnlyCollection<ChangeIndicator>? indicators = default,
@@ -139,6 +152,7 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
     {
         Description = description;
         Kind = kind;
+        Type = type;
         Scopes = scopes ?? OperationScope.List;
         Areas = areas ?? [];
         Indicators = indicators ?? [];
@@ -149,6 +163,11 @@ public class OperationDescriptor : SmartEnum<OperationDescriptor, char>
     /// Gets the description of the operation.
     /// </summary>
     public string Description { get; }
+
+    /// <summary>
+    /// Gets the type for the operation.
+    /// </summary>
+    public Type Type { get; }
 
     /// <summary>
     /// Gets the kind of execution performed by the operation.
