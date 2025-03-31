@@ -2,8 +2,7 @@ using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using Gint.Console;
 using Gint.Console.Commands;
-using Gint.Console.IO;
-using Microsoft.Extensions.DependencyInjection;
+using Gint.Core;
 
 return await new CommandLineBuilder(new GintRootCommand())
     .UseVersionOption()
@@ -17,7 +16,8 @@ return await new CommandLineBuilder(new GintRootCommand())
     .UseExceptionHandler()
     .CancelOnProcessTermination()
     .UseDependencyInjection(services => services
-        .AddSingleton(ApplicationConsole.Console))
+        .AddConsole()
+        .AddCore())
     .Build()
     .InvokeAsync(args)
     .ConfigureAwait(false);

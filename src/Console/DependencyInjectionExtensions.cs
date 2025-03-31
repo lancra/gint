@@ -1,5 +1,7 @@
 using System.CommandLine.Builder;
 using System.CommandLine.Invocation;
+using Gint.Console.IO;
+using Gint.Core.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -8,6 +10,11 @@ namespace Gint.Console;
 // See: https://anthonysimmon.com/true-dependency-injection-with-system-commandline
 internal static class DependencyInjectionExtensions
 {
+    public static IServiceCollection AddConsole(this IServiceCollection services)
+        => services.AddSingleton(ApplicationConsole.Console)
+        .AddScoped<IRunPrompt, ConsoleRunPrompt>()
+        .AddScoped<IPrinter, ConsolePrinter>();
+
     public static CommandLineBuilder UseDependencyInjection(
         this CommandLineBuilder builder,
         Action<IServiceCollection> configureServices)
