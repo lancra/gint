@@ -19,9 +19,5 @@ internal sealed class TestConsoleInput : IConsoleInput
         return line;
     }
 
-    internal TestConsoleInput Add(string line)
-    {
-        _lines.Add(line);
-        return this;
-    }
+    internal void Add(string line) => _lines.Add(line);
 }

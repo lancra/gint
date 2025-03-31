@@ -4,14 +4,18 @@ using Spectre.Console.Testing;
 
 namespace Gint.Console.Facts.Testbed;
 
-internal sealed class TestApplicationConsole(TestConsoleInput input) : IApplicationConsole, IDisposable
+internal sealed class TestApplicationConsole : IApplicationConsole, IDisposable
 {
+    private const int Width = 200;
+
     private readonly TestConsole _output = new();
     private readonly TestConsole _error = new();
+    private readonly TestConsoleInput _input = new();
 
     public TestApplicationConsole()
-        : this(new())
     {
+        _output.Profile.Width = Width;
+        _error.Profile.Width = Width;
     }
 
     public IAnsiConsole Output => _output;
@@ -22,7 +26,15 @@ internal sealed class TestApplicationConsole(TestConsoleInput input) : IApplicat
 
     public IReadOnlyList<string> ErrorLines => GetLines(_error);
 
-    public IConsoleInput Input { get; } = input;
+    public IConsoleInput Input => _input;
+
+    public void AddInputLines(params IReadOnlyCollection<string> lines)
+    {
+        foreach (var line in lines)
+        {
+            _input.Add(line);
+        }
+    }
 
     public void Dispose()
     {
