@@ -37,6 +37,14 @@ namespace Gint.Core.Properties
                 descriptor, text);
 
         /// <summary>
+        /// Failed to access Git status,received code {exitCode}.
+        /// </summary>
+        public static string StatusAccessFailure(object? exitCode)
+            => string.Format(
+                GetString("StatusAccessFailure", nameof(exitCode)),
+                exitCode);
+
+        /// <summary>
         /// Unknown area '{area}'.
         /// </summary>
         public static string UnknownAreaInput(object? area)

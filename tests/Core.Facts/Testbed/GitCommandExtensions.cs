@@ -7,6 +7,15 @@ namespace Gint.Core.Facts.Testbed;
 
 internal static class GitCommandExtensions
 {
+    public static void MockGitRead(this AutoMocker mocker, string arguments, GitCommandResult result)
+    {
+        var argumentSegments = arguments.Split(' ');
+        mocker.GetMock<IGitCommand>()
+            .Setup(command => command.Read(default, argumentSegments))
+            .ReturnsAsync(result)
+            .Verifiable();
+    }
+
     public static void MockGitRun(this AutoMocker mocker, string arguments, GitCommandResult? result = default)
     {
         var argumentSegments = arguments.Split(' ');

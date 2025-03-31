@@ -126,6 +126,9 @@
   <data name="LongAreaAwareRunspecInput" xml:space="preserve">
     <value>Only one letter and an optional area indicator are expected for command '{descriptor}', got '{text}'.</value>
   </data>
+  <data name="StatusAccessFailure" xml:space="preserve">
+    <value>Failed to access Git status,received code {exitCode}.</value>
+  </data>
   <data name="UnknownAreaInput" xml:space="preserve">
     <value>Unknown area '{area}'.</value>
   </data>
