@@ -12,7 +12,7 @@ internal static class ArtifactPaths
     public const string Root = "artifacts";
 
     public const string Executables = $"{Root}/executables";
-    public static readonly CompositeFormat ExecutableFormat = CompositeFormat.Parse($"{Executables}/{{0}}");
+    public static readonly CompositeFormat ExecutableFormat = CompositeFormat.Parse($"{Executables}/{{0}}/{{1}}");
 
     public const string Solution = $"{Root}/gint.slnf";
 

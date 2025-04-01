@@ -4,7 +4,7 @@ internal sealed class PublishTarget : ITarget
 {
     private static readonly PublishProject[] Projects =
     [
-        new("console", "src/Console"),
+        new("console", "src/Console", ["win-x64"]),
     ];
 
     public void Setup(Bullseye.Targets targets)
@@ -17,13 +17,16 @@ internal sealed class PublishTarget : ITarget
 
     private static async Task Execute(PublishProject project)
     {
-        var executablePath = string.Format(null, ArtifactPaths.ExecutableFormat, project.Name);
-        await DotnetCli
-            .Run(
-                "publish",
-                project.Path,
-                $"--output {executablePath}",
-                "--no-build")
-            .ConfigureAwait(false);
+        foreach (var runtime in project.Runtimes)
+        {
+            var executablePath = string.Format(null, ArtifactPaths.ExecutableFormat, project.Name, runtime);
+            await DotnetCli
+                .Run(
+                    "publish",
+                    project.Path,
+                    $"--output {executablePath}",
+                    "--no-build")
+                .ConfigureAwait(false);
+        }
     }
 }
