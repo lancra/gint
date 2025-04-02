@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <PropertyGroup Label="Versioning">
+    <MinVerAutoIncrement>minor</MinVerAutoIncrement>
     <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
     <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
