@@ -6,11 +6,12 @@ internal sealed class CleanTarget : ITarget
         => targets.Add(
             BuildTargets.Clean,
             "Cleans .NET build artifacts from prior executions.",
+            dependsOn: [BuildTargets.Solution],
             Execute);
 
     private static async Task Execute()
     {
-        await DotnetCli.Run("clean")
+        await DotnetCli.Run("clean", ArtifactPaths.Solution)
             .ConfigureAwait(false);
 
         if (Directory.Exists(ArtifactPaths.TestResults))

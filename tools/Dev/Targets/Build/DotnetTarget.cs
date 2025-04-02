@@ -11,7 +11,10 @@ internal sealed class DotnetTarget : ITarget
 
     private static async Task Execute()
     {
-        var arguments = new List<string>();
+        var arguments = new List<string>
+        {
+            ArtifactPaths.Solution,
+        };
 
         if (!EnvironmentVariables.LocalBuild)
         {

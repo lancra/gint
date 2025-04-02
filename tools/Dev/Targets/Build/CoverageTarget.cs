@@ -23,6 +23,7 @@ internal sealed class CoverageTarget : ITarget
             string.Format(null, AssemblyPatternFormat, "+", string.Empty),
             string.Format(null, AssemblyPatternFormat, "-", "Dev"),
             string.Format(null, AssemblyPatternFormat, "-", "Facts"),
+            string.Format(null, AssemblyPatternFormat, "-", "Testbed"),
             string.Format(null, AssemblyPatternFormat, "-", "Tests"),
         ];
 
