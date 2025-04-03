@@ -36,7 +36,7 @@ internal sealed class ConsoleRunPrompt(
                 .ConfigureAwait(false);
             operationResults.Add(operationResult);
 
-            if (operationResult.Succeeded && operationResult.Wrote)
+            if (operationResult.Wrote)
             {
                 changes = await _changeAccessor.Get(context.Pathspec, cancellationToken)
                     .ConfigureAwait(false);

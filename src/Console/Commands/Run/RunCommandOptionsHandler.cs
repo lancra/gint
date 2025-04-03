@@ -11,9 +11,9 @@ internal sealed class RunCommandOptionsHandler(IRunPrompt prompt) : ICommandOpti
     {
         var context = new RunPromptContext(new(options.Pathspec), OperationScope.All);
 
-        var results = await _prompt.Open(context, cancellationToken)
+        await _prompt.Open(context, cancellationToken)
             .ConfigureAwait(false);
 
-        return results.All(result => result.Succeeded) ? ExitCode.Success : ExitCode.Error;
+        return ExitCode.Success;
     }
 }
