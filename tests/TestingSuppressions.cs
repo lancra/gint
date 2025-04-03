@@ -18,6 +18,10 @@ using System.Diagnostics.CodeAnalysis;
     Justification = "Test methods are not under the same constraints as typical public methods.")]
 [assembly: SuppressMessage(
     "Maintainability",
+    "CA1506:Avoid excessive class coupling",
+    Justification = "Difficult to avoid with a large number of required mocks and fakes.")]
+[assembly: SuppressMessage(
+    "Maintainability",
     "CA1515:Consider making public types internal",
     Justification = "Test classes must be public.")]
 [assembly: SuppressMessage(
