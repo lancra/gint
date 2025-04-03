@@ -305,5 +305,81 @@ public class ConsoleRunPromptFacts : IDisposable
             Assert.Equal(Messages.LongAreaAwareRunspecInput('d', "d++"), _console.ErrorLines[3]);
             Assert.Equal(Messages.UnknownAreaInput('_'), _console.ErrorLines[4]);
         }
+
+        [Fact]
+        public async Task RefreshesChangesWhenOperationWrote()
+        {
+            // Arrange
+            var context = new RunPromptContext(new("."), OperationScope.All);
+
+            var changesUntracked = ChangesCreator.CreateGroup(
+                ChangesCreator.CreateFile(indicator: ChangeIndicator.Untracked, path: "foo.txt"),
+                ChangesCreator.CreateFile(indicator: ChangeIndicator.Untracked, path: "bar.txt"));
+
+            var changesAdded = ChangesCreator.CreateGroup(
+                ChangesCreator.CreateFile(
+                    stagingIndicator: ChangeIndicator.Added,
+                    workingIndicator: ChangeIndicator.Unmodified,
+                    path: "foo.txt"),
+                ChangesCreator.CreateFile(
+                    stagingIndicator: ChangeIndicator.Added,
+                    workingIndicator: ChangeIndicator.Unmodified,
+                    path: "bar.txt"));
+
+            _mocker.GetMock<IChangeAccessor>()
+                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .ReturnsAsync(changesUntracked)
+                .ReturnsAsync(changesAdded);
+
+            _mocker.GetMock<IOperationAccessor>()
+                .Setup(operationAccessor => operationAccessor.Filter(It.IsAny<OperationFilter>()))
+                .Returns(
+                    [
+                        OperationDescriptor.Break,
+                        OperationDescriptor.Quit
+                    ]);
+
+            _console.AddInputLines("b", "q");
+
+            _mocker.GetMock<IOperation>()
+                .Setup(operation => operation.Execute(
+                    It.Is<OperationContext>(operationContext => operationContext.Runspec.Descriptor == OperationDescriptor.Break),
+                    default))
+                .ReturnsAsync((OperationContext operationContext, CancellationToken _)
+                    => OperationResult.Derived(
+                        operationContext,
+                        [
+                            OperationResult.Command(
+                                operationContext with { Runspec = new(OperationDescriptor.Add, default), },
+                                GitCommandResultCreator.CreateRunSuccess()),
+                            OperationResult.Command(
+                                operationContext with { Runspec = new(OperationDescriptor.Add, default), },
+                                GitCommandResultCreator.CreateRunFailure()),
+                            OperationResult.Command(
+                                operationContext with { Runspec = new(OperationDescriptor.Add, default), },
+                                GitCommandResultCreator.CreateRunSuccess()),
+                        ]));
+
+            _mocker.GetMock<IOperation>()
+                .Setup(operation => operation.Execute(
+                    It.Is<OperationContext>(operationContext => operationContext.Runspec.Descriptor == OperationDescriptor.Quit),
+                    default))
+                .ReturnsAsync((OperationContext operationContext, CancellationToken _)
+                    => OperationResult.Terminal(operationContext));
+
+            var sut = CreateSystemUnderTest();
+
+            // Act
+            var results = await sut.Open(context, default);
+
+            // Assert
+            Assert.Equal(2, results.Count);
+            var breakResult = Assert.Single(results, result => result.Context.Runspec.Descriptor == OperationDescriptor.Break);
+            Assert.False(breakResult.Succeeded);
+            Assert.True(breakResult.Wrote);
+
+            _mocker.GetMock<IChangeAccessor>()
+                .Verify(changeAccessor => changeAccessor.Get(context.Pathspec, default), Times.Exactly(2));
+        }
     }
 }
