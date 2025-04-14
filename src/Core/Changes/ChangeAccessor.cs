@@ -6,6 +6,8 @@ namespace Gint.Core.Changes;
 
 internal class ChangeAccessor(IGitCommand command) : IChangeAccessor
 {
+    private const int NonGitRepositoryExitCode = 128;
+
     private readonly IGitCommand _command = command;
 
     public async Task<ChangeGroupResult> Get(Pathspec pathspec, CancellationToken cancellationToken)
@@ -22,7 +24,9 @@ internal class ChangeAccessor(IGitCommand command) : IChangeAccessor
             .ConfigureAwait(false);
         if (!commandResult.Succeeded)
         {
-            return ChangeGroupResult.Error(Messages.StatusAccessFailure(commandResult.ExitCode));
+            return ChangeGroupResult.Error(commandResult.ExitCode == NonGitRepositoryExitCode
+                ? Messages.StatusAccessNonGitRepository
+                : Messages.StatusAccessFailure(commandResult.ExitCode));
         }
 
         var files = new List<ChangeFile>();

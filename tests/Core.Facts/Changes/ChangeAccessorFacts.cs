@@ -63,6 +63,25 @@ public class ChangeAccessorFacts
         }
 
         [Fact]
+        public async Task ReturnsErrorResultWhenExecutedInNonGitRepository()
+        {
+            // Arrange
+            var pathspec = ".";
+            var commandResult = new GitCommandResult(128, []);
+
+            _mocker.MockGitRead($"status --short --untracked-files {pathspec}", commandResult);
+
+            var sut = CreateSystemUnderTest();
+
+            // Act
+            var changesResult = await sut.Get(new(pathspec), default);
+
+            // Assert
+            Assert.Null(changesResult.Changes);
+            Assert.Equal(Messages.StatusAccessNonGitRepository, changesResult.Message);
+        }
+
+        [Fact]
         public async Task ReturnsErrorResultWhenFailureEncountered()
         {
             // Arrange
