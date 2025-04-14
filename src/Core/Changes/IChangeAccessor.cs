@@ -12,6 +12,8 @@ public interface IChangeAccessor
     /// </summary>
     /// <param name="pathspec">The pathspec used to limit the files.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-    /// <returns>The <see cref="Task"/> that represents the asynchronous operation, containing the current changes.</returns>
-    Task<ChangeGroup> Get(Pathspec pathspec, CancellationToken cancellationToken);
+    /// <returns>
+    /// The <see cref="Task"/> that represents the asynchronous operation, containing the result of accessing the current changes.
+    /// </returns>
+    Task<ChangeGroupResult> Get(Pathspec pathspec, CancellationToken cancellationToken);
 }

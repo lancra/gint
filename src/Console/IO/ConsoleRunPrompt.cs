@@ -21,16 +21,23 @@ internal sealed class ConsoleRunPrompt(
 
     public async Task<IReadOnlyCollection<OperationResult>> Open(RunPromptContext context, CancellationToken cancellationToken)
     {
-        var changes = await _changeAccessor.Get(context.Pathspec, cancellationToken)
+        var changesResult = await _changeAccessor.Get(context.Pathspec, cancellationToken)
             .ConfigureAwait(false);
+        if (changesResult.Changes is null)
+        {
+            _console.Error.MarkupLine($"[red]{changesResult.Message}[/]");
+            return [];
+        }
+
+        var changes = changesResult.Changes;
         _printer.PrintChanges(changes);
 
         var exit = changes.Files.Count == 0;
         var operationResults = new List<OperationResult>();
         while (!exit)
         {
-            var runspec = ReadRunspec(context, changes);
-            var operationContext = new OperationContext(runspec, context.Pathspec, context.Scope, changes);
+            var runspec = ReadRunspec(context, changes!);
+            var operationContext = new OperationContext(runspec, context.Pathspec, context.Scope, changes!);
 
             var operationResult = await _operation.Execute(operationContext, cancellationToken)
                 .ConfigureAwait(false);
@@ -38,11 +45,12 @@ internal sealed class ConsoleRunPrompt(
 
             if (operationResult.Wrote)
             {
-                changes = await _changeAccessor.Get(context.Pathspec, cancellationToken)
+                var innerChangesResult = await _changeAccessor.Get(context.Pathspec, cancellationToken)
                     .ConfigureAwait(false);
+                changes = innerChangesResult.Changes;
             }
 
-            exit = operationResult.Exit || changes.Files.Count == 0;
+            exit = operationResult.Exit || changes!.Files.Count == 0;
         }
 
         return operationResults;

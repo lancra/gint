@@ -8,7 +8,7 @@ internal class ChangeAccessor(IGitCommand command) : IChangeAccessor
 {
     private readonly IGitCommand _command = command;
 
-    public async Task<ChangeGroup> Get(Pathspec pathspec, CancellationToken cancellationToken)
+    public async Task<ChangeGroupResult> Get(Pathspec pathspec, CancellationToken cancellationToken)
     {
         string[] arguments =
         [
@@ -22,7 +22,7 @@ internal class ChangeAccessor(IGitCommand command) : IChangeAccessor
             .ConfigureAwait(false);
         if (!commandResult.Succeeded)
         {
-            throw new InvalidOperationException(Messages.StatusAccessFailure(commandResult.ExitCode));
+            return ChangeGroupResult.Error(Messages.StatusAccessFailure(commandResult.ExitCode));
         }
 
         var files = new List<ChangeFile>();
@@ -36,6 +36,6 @@ internal class ChangeAccessor(IGitCommand command) : IChangeAccessor
         }
 
         var changes = new ChangeGroup(files);
-        return changes;
+        return ChangeGroupResult.Success(changes);
     }
 }
