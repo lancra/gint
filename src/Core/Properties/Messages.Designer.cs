@@ -45,6 +45,12 @@ namespace Gint.Core.Properties
                 exitCode);
 
         /// <summary>
+        /// The provided path is not a Git repository.
+        /// </summary>
+        public static string StatusAccessNonGitRepository
+            => GetString("StatusAccessNonGitRepository");
+
+        /// <summary>
         /// Unknown area '{area}'.
         /// </summary>
         public static string UnknownAreaInput(object? area)

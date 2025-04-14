@@ -16,7 +16,7 @@ public class ChangeAccessorFacts
     public class TheGetMethod : ChangeAccessorFacts
     {
         [Fact]
-        public async Task ReturnsChangeGroupRepresentingGitStatusOutput()
+        public async Task ReturnsSuccessfulChangeGroupResultRepresentingGitStatusOutput()
         {
             // Arrange
             var pathspec = ".";
@@ -47,9 +47,13 @@ public class ChangeAccessorFacts
                         file.Path == path);
 
             // Act
-            var changes = await sut.Get(new(pathspec), default);
+            var changesResult = await sut.Get(new(pathspec), default);
 
             // Assert
+            Assert.Empty(changesResult.Message);
+            Assert.NotNull(changesResult.Changes);
+
+            var changes = changesResult.Changes;
             Assert.Equal(5, changes.Files.Count);
             AssertFile(changes, ChangeIndicator.Unmodified, ChangeIndicator.Modified, "foo.txt");
             AssertFile(changes, ChangeIndicator.Added, ChangeIndicator.Unmodified, "bar.txt");
@@ -59,7 +63,26 @@ public class ChangeAccessorFacts
         }
 
         [Fact]
-        public async Task ThrowsInvalidOperationExceptionWhenGitStatusCommandFails()
+        public async Task ReturnsErrorResultWhenExecutedInNonGitRepository()
+        {
+            // Arrange
+            var pathspec = ".";
+            var commandResult = new GitCommandResult(128, []);
+
+            _mocker.MockGitRead($"status --short --untracked-files {pathspec}", commandResult);
+
+            var sut = CreateSystemUnderTest();
+
+            // Act
+            var changesResult = await sut.Get(new(pathspec), default);
+
+            // Assert
+            Assert.Null(changesResult.Changes);
+            Assert.Equal(Messages.StatusAccessNonGitRepository, changesResult.Message);
+        }
+
+        [Fact]
+        public async Task ReturnsErrorResultWhenFailureEncountered()
         {
             // Arrange
             var pathspec = ".";
@@ -70,12 +93,11 @@ public class ChangeAccessorFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var exception = await Record.ExceptionAsync(async () => await sut.Get(new(pathspec), default));
+            var changesResult = await sut.Get(new(pathspec), default);
 
             // Assert
-            Assert.NotNull(exception);
-            Assert.IsType<InvalidOperationException>(exception);
-            Assert.Equal(Messages.StatusAccessFailure(commandResult.ExitCode), exception.Message);
+            Assert.Null(changesResult.Changes);
+            Assert.Equal(Messages.StatusAccessFailure(commandResult.ExitCode), changesResult.Message);
         }
     }
 }

@@ -45,7 +45,7 @@ public class ConsoleRunPromptFacts : IDisposable
 
             _mocker.GetMock<IChangeAccessor>()
                 .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(ChangesCreator.CreateGroup([]));
+                .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup([])));
 
             var sut = CreateSystemUnderTest();
 
@@ -61,6 +61,33 @@ public class ConsoleRunPromptFacts : IDisposable
         }
 
         [Fact]
+        public async Task ExitsWithoutExecutingOperationWhenChangesAccessFails()
+        {
+            // Arrange
+            var context = new RunPromptContext(new("."), OperationScope.All);
+
+            var expectedMessage = "Foo bar baz.";
+            _mocker.GetMock<IChangeAccessor>()
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .ReturnsAsync(ChangeGroupResult.Error(expectedMessage));
+
+            var sut = CreateSystemUnderTest();
+
+            // Act
+            var results = await sut.Open(context, default);
+
+            // Assert
+            Assert.Empty(results);
+            _mocker.GetMock<IOperation>()
+                .Verify(
+                    operation => operation.Execute(It.IsAny<OperationContext>(), default),
+                    Times.Never());
+
+            var actualMessage = Assert.Single(_console.ErrorLines);
+            Assert.Equal(expectedMessage, actualMessage);
+        }
+
+        [Fact]
         public async Task ExitsAfterIndicatedByExecutedOperation()
         {
             // Arrange
@@ -69,7 +96,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var changes = ChangesCreator.CreateGroup(ChangesCreator.CreateFile());
             _mocker.GetMock<IChangeAccessor>()
                 .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(changes);
+                .ReturnsAsync(ChangeGroupResult.Success(changes));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.Is<OperationFilter>(filter =>
@@ -112,8 +139,8 @@ public class ConsoleRunPromptFacts : IDisposable
             var changes = ChangesCreator.CreateGroup(ChangesCreator.CreateFile());
             _mocker.GetMock<IChangeAccessor>()
                 .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(changes)
-                .ReturnsAsync(ChangesCreator.CreateGroup([]));
+                .ReturnsAsync(ChangeGroupResult.Success(changes))
+                .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup([])));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.Is<OperationFilter>(filter =>
@@ -169,9 +196,9 @@ public class ConsoleRunPromptFacts : IDisposable
             var changesUnstaged = ChangesCreator.CreateGroup(fileUnstaged);
             _mocker.GetMock<IChangeAccessor>()
                 .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(changesStaged)
-                .ReturnsAsync(changesUntracked)
-                .ReturnsAsync(changesUnstaged);
+                .ReturnsAsync(ChangeGroupResult.Success(changesStaged))
+                .ReturnsAsync(ChangeGroupResult.Success(changesUntracked))
+                .ReturnsAsync(ChangeGroupResult.Success(changesUnstaged));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.IsAny<OperationFilter>()))
@@ -220,7 +247,7 @@ public class ConsoleRunPromptFacts : IDisposable
 
             _mocker.GetMock<IChangeAccessor>()
                 .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(ChangesCreator.CreateGroup(ChangesCreator.CreateFile()));
+                .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup(ChangesCreator.CreateFile())));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.IsAny<OperationFilter>()))
@@ -250,7 +277,7 @@ public class ConsoleRunPromptFacts : IDisposable
 
             _mocker.GetMock<IChangeAccessor>()
                 .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(ChangesCreator.CreateGroup(ChangesCreator.CreateFile()));
+                .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup(ChangesCreator.CreateFile())));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.IsAny<OperationFilter>()))
@@ -280,7 +307,7 @@ public class ConsoleRunPromptFacts : IDisposable
 
             _mocker.GetMock<IChangeAccessor>()
                 .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(ChangesCreator.CreateGroup(ChangesCreator.CreateFile()));
+                .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup(ChangesCreator.CreateFile())));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.IsAny<OperationFilter>()))
@@ -328,8 +355,8 @@ public class ConsoleRunPromptFacts : IDisposable
 
             _mocker.GetMock<IChangeAccessor>()
                 .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
-                .ReturnsAsync(changesUntracked)
-                .ReturnsAsync(changesAdded);
+                .ReturnsAsync(ChangeGroupResult.Success(changesUntracked))
+                .ReturnsAsync(ChangeGroupResult.Success(changesAdded));
 
             _mocker.GetMock<IOperationAccessor>()
                 .Setup(operationAccessor => operationAccessor.Filter(It.IsAny<OperationFilter>()))
