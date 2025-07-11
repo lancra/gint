@@ -1,0 +1,8 @@
+# See: https://megalinter.io/latest/config-file/
+
+APPLY_FIXES: none
+ENABLE_LINTERS:
+  - NONE
+LINTER_RULES_PATH: .config/linters
+PRINT_ALPACA: false
+SHOW_ELAPSED_TIME: true
