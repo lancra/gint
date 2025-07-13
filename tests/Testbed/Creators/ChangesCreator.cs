@@ -47,7 +47,7 @@ public static class ChangesCreator
     /// <summary>
     /// Creates a change file for testing.
     /// </summary>
-    /// <param name="indicator">The chnage indicator for both areas.</param>
+    /// <param name="indicator">The change indicator for both areas.</param>
     /// <param name="path">The path of the file.</param>
     /// <returns>The created change file.</returns>
     public static ChangeFile CreateFile(

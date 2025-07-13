@@ -1,0 +1,42 @@
+# C#
+ardalis
+linq
+nameof
+stylecop
+xunit
+
+# Command Line
+nologo
+popd
+pushd
+reportgenerator
+reporttypes
+targetdir
+
+# MSBuild
+buildtransitive
+contentfiles
+globalconfig
+runsettings
+slnf
+slnx
+warnaserror
+
+# PowerShell
+lastexitcode
+pwsh
+
+# T4 Templates (.tt)
+hostspecific
+
+# XML Resources (.resx)
+bytearray
+depersist
+msdata
+resheader
+resmimetype
+resx
+
+gint
+pathspec
+runspec

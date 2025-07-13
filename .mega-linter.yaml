@@ -1,9 +1,14 @@
 # See: https://megalinter.io/latest/config-file/
 
+# Global
 APPLY_FIXES: none
 ENABLE_LINTERS:
   - JSON_PRETTIER
+  - SPELL_CSPELL
   - YAML_PRETTIER
 LINTER_RULES_PATH: .config/linters
 PRINT_ALPACA: false
 SHOW_ELAPSED_TIME: true
+
+# Linters
+SPELL_CSPELL_CLI_LINT_MODE: project
