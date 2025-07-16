@@ -19,9 +19,9 @@ $solutionFilterPath = Join-Path -Path $artifactsDirectoryPath -ChildPath 'gint.s
 
 [PSCustomObject]@{
     solution = [PSCustomObject]@{
-        path = $relativeSolutionPath
+        path     = $relativeSolutionPath
         projects = $projectPaths
     }
 } |
-ConvertTo-Json |
-Set-Content -Path $solutionFilterPath
+    ConvertTo-Json |
+    Set-Content -Path $solutionFilterPath
