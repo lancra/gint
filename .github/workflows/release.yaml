@@ -13,6 +13,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      # Recreate tag rewritten by workflow.
+      # See: https://redirect.github.com/actions/checkout/issues/290
+      - name: Fix Target Tag
+        run: git fetch --tags --force
+        shell: bash
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
       - name: Restore .NET Tools
