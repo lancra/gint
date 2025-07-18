@@ -2,6 +2,10 @@
 
 New gint releases are initiated by pushing a new version tag to GitHub. Version tags match the pattern `v*`.
 
+```shell
+git tag --sign <TAG_NAME>
+```
+
 ## GitHub Releases
 
 GitHub releases are created from each tag using the refname and the message.
