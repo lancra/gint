@@ -1,6 +1,6 @@
-namespace Gint.Dev;
+namespace Gint.Dev.Targets;
 
-internal static class BuildTargets
+internal static class TargetKeys
 {
     public const string Build = "build";
     public const string Clean = "clean";

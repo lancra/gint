@@ -4,9 +4,9 @@ internal sealed class CleanTarget : ITarget
 {
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Clean,
+            TargetKeys.Clean,
             "Cleans .NET build artifacts from prior executions.",
-            dependsOn: [BuildTargets.Solution],
+            dependsOn: [TargetKeys.Solution],
             Execute);
 
     private static async Task Execute()

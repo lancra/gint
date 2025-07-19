@@ -4,7 +4,7 @@ internal sealed class SolutionTarget : ITarget
 {
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Solution,
+            TargetKeys.Solution,
             "Generates the solution used for the build process.",
             Execute);
 

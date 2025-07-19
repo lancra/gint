@@ -10,9 +10,9 @@ internal sealed class CoverageTarget : ITarget
 
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Coverage,
+            TargetKeys.Coverage,
             "Generates code coverage reports for test results.",
-            dependsOn: [BuildTargets.Test],
+            dependsOn: [TargetKeys.Test],
             Execute);
 
     private static async Task Execute()

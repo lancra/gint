@@ -4,9 +4,9 @@ internal sealed class DotnetTarget : ITarget
 {
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Dotnet,
+            TargetKeys.Dotnet,
             "Builds the solution into a set of output binaries.",
-            dependsOn: [BuildTargets.Clean],
+            dependsOn: [TargetKeys.Clean],
             Execute);
 
     private static async Task Execute()
