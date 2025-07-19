@@ -15,7 +15,11 @@ internal sealed class DevEnvironmentVariable
     private bool _hydratedValue;
     private string? _value;
 
-    private DevEnvironmentVariable(string name) => Name = Prefix + name;
+    public DevEnvironmentVariable(string name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        Name = Prefix + name;
+    }
 
     public string Name { get; }
 
@@ -32,8 +36,6 @@ internal sealed class DevEnvironmentVariable
             return _value;
         }
     }
-
-    public static implicit operator DevEnvironmentVariable(string name) => new(name);
 
     public static implicit operator bool(DevEnvironmentVariable variable)
         => variable.Value is not null &&
