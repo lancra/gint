@@ -16,7 +16,7 @@ internal sealed class DotnetTarget : ITarget
             ArtifactPaths.Solution,
         };
 
-        if (!EnvironmentVariables.LocalBuild)
+        if (!EnvironmentVariables.LocalBuild.IsTruthy)
         {
             arguments.Add("/warnaserror");
         }

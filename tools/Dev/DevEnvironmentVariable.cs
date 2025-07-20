@@ -37,7 +37,7 @@ internal sealed class DevEnvironmentVariable
         }
     }
 
-    public static implicit operator bool(DevEnvironmentVariable variable)
-        => variable.Value is not null &&
-        TrueValues.Contains(variable.Value, StringComparer.OrdinalIgnoreCase);
+    public bool IsTruthy
+        => Value is not null &&
+        TrueValues.Contains(Value, StringComparer.OrdinalIgnoreCase);
 }
