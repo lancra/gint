@@ -21,23 +21,31 @@ internal sealed class DevEnvironmentVariable
         Name = Prefix + name;
     }
 
+    public DevEnvironmentVariable(string name, string defaultValue)
+        : this(name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(defaultValue);
+        DefaultValue = defaultValue;
+    }
+
     public string Name { get; }
 
-    public string? Value
+    public string? DefaultValue { get; }
+
+    public string Value
     {
         get
         {
             if (!_hydratedValue)
             {
-                _value = Environment.GetEnvironmentVariable(Name);
+                _value = Environment.GetEnvironmentVariable(Name) ?? DefaultValue;
                 _hydratedValue = true;
             }
 
-            return _value;
+            return _value ?? string.Empty;
         }
     }
 
     public bool IsTruthy
-        => Value is not null &&
-        TrueValues.Contains(Value, StringComparer.OrdinalIgnoreCase);
+        => TrueValues.Contains(Value, StringComparer.OrdinalIgnoreCase);
 }
