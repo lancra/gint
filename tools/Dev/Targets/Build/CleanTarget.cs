@@ -16,16 +16,7 @@ internal sealed class CleanTarget : ITarget
 
         if (Directory.Exists(ArtifactPaths.TestResults))
         {
-            string[] removeTestResultsArguments =
-            [
-                "-Command Remove-Item",
-                $"-Path {ArtifactPaths.TestResults}",
-                "-Recurse",
-                "-ErrorAction SilentlyContinue",
-            ];
-
-            await PowerShell.Run(removeTestResultsArguments)
-                .ConfigureAwait(false);
+            Directory.Delete(ArtifactPaths.TestResults, true);
         }
     }
 }
