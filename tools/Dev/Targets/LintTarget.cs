@@ -26,5 +26,12 @@ internal sealed class LintTarget : ITarget
 
         await SimpleExec.Command.RunAsync(EnvironmentVariables.VirtualizationPlatform.Value, string.Join(' ', arguments))
             .ConfigureAwait(false);
+
+        if (Directory.Exists(ArtifactPaths.LintResults))
+        {
+            Directory.Delete(ArtifactPaths.LintResults, true);
+        }
+
+        Directory.Move("megalinter-reports", ArtifactPaths.LintResults);
     }
 }
