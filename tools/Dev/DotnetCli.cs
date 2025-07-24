@@ -15,8 +15,12 @@ internal static class DotnetCli
             additionalArgumentsString = $" {string.Join(' ', args)}";
         }
 
-        var configuration = EnvironmentVariables.BuildConfiguration.Value ?? "Release";
-        var argumentsString = string.Format(null, ArgumentsFormat, command, configuration, additionalArgumentsString);
+        var argumentsString = string.Format(
+            null,
+            ArgumentsFormat,
+            command,
+            EnvironmentVariables.BuildConfiguration.Value,
+            additionalArgumentsString);
         await SimpleExec.Command.RunAsync("dotnet", argumentsString)
             .ConfigureAwait(false);
     }

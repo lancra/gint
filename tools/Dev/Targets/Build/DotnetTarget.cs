@@ -4,9 +4,9 @@ internal sealed class DotnetTarget : ITarget
 {
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Dotnet,
+            TargetKeys.Dotnet,
             "Builds the solution into a set of output binaries.",
-            dependsOn: [BuildTargets.Clean],
+            dependsOn: [TargetKeys.Clean],
             Execute);
 
     private static async Task Execute()
@@ -16,7 +16,7 @@ internal sealed class DotnetTarget : ITarget
             ArtifactPaths.Solution,
         };
 
-        if (!EnvironmentVariables.LocalBuild)
+        if (!EnvironmentVariables.LocalBuild.IsTruthy)
         {
             arguments.Add("/warnaserror");
         }

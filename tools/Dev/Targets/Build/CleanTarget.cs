@@ -4,9 +4,9 @@ internal sealed class CleanTarget : ITarget
 {
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Clean,
+            TargetKeys.Clean,
             "Cleans .NET build artifacts from prior executions.",
-            dependsOn: [BuildTargets.Solution],
+            dependsOn: [TargetKeys.Solution],
             Execute);
 
     private static async Task Execute()
@@ -16,16 +16,7 @@ internal sealed class CleanTarget : ITarget
 
         if (Directory.Exists(ArtifactPaths.TestResults))
         {
-            string[] removeTestResultsArguments =
-            [
-                "-Command Remove-Item",
-                $"-Path {ArtifactPaths.TestResults}",
-                "-Recurse",
-                "-ErrorAction SilentlyContinue",
-            ];
-
-            await PowerShell.Run(removeTestResultsArguments)
-                .ConfigureAwait(false);
+            Directory.Delete(ArtifactPaths.TestResults, true);
         }
     }
 }

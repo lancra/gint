@@ -5,7 +5,7 @@ internal sealed class TestTarget : ITarget
     private static readonly TestSuite[] Suites =
     [
         new(
-            BuildTargets.TestUnit,
+            TargetKeys.TestUnit,
             "Tests individual components of the application.",
             [
                 new("console", "tests/Console.Facts"),
@@ -21,7 +21,7 @@ internal sealed class TestTarget : ITarget
         }
 
         targets.Add(
-            BuildTargets.Test,
+            TargetKeys.Test,
             "Executes automated test suites.",
             dependsOn: Suites.Select(suite => suite.Name)
                 .ToArray());
@@ -31,7 +31,7 @@ internal sealed class TestTarget : ITarget
         => targets.Add(
             suite.Name,
             suite.Description,
-            dependsOn: [BuildTargets.Dotnet],
+            dependsOn: [TargetKeys.Dotnet],
             forEach: suite.Projects,
             Execute);
 

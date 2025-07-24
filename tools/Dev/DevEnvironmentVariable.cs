@@ -15,27 +15,37 @@ internal sealed class DevEnvironmentVariable
     private bool _hydratedValue;
     private string? _value;
 
-    private DevEnvironmentVariable(string name) => Name = Prefix + name;
+    public DevEnvironmentVariable(string name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        Name = Prefix + name;
+    }
+
+    public DevEnvironmentVariable(string name, string defaultValue)
+        : this(name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(defaultValue);
+        DefaultValue = defaultValue;
+    }
 
     public string Name { get; }
 
-    public string? Value
+    public string? DefaultValue { get; }
+
+    public string Value
     {
         get
         {
             if (!_hydratedValue)
             {
-                _value = Environment.GetEnvironmentVariable(Name);
+                _value = Environment.GetEnvironmentVariable(Name) ?? DefaultValue;
                 _hydratedValue = true;
             }
 
-            return _value;
+            return _value ?? string.Empty;
         }
     }
 
-    public static implicit operator DevEnvironmentVariable(string name) => new(name);
-
-    public static implicit operator bool(DevEnvironmentVariable variable)
-        => variable.Value is not null &&
-        TrueValues.Contains(variable.Value, StringComparer.OrdinalIgnoreCase);
+    public bool IsTruthy
+        => TrueValues.Contains(Value, StringComparer.OrdinalIgnoreCase);
 }

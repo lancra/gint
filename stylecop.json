@@ -15,7 +15,7 @@
       "usingDirectivesPlacement": "outsideNamespace"
     },
     "maintainabilityRules": {
-      "topLevelTypes": [ "class", "interface" ]
+      "topLevelTypes": ["class", "interface"]
     }
   }
 }

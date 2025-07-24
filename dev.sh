@@ -1,3 +1,3 @@
 #!/bin/bash
 set -euo pipefail
-dotnet run --project "./tools/Dev" -- $@
+dotnet run --project "./tools/Dev" -- "$@"

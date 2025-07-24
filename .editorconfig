@@ -22,3 +22,11 @@ indent_size = 4
 
 [*.ts]
 quote_type = single
+
+[*.resx]
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[/.config/dotnet-tools.json]
+insert_final_newline = unset
+

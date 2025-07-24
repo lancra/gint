@@ -29,16 +29,17 @@ jobs:
       - id: variables
         name: Define Release Variables
         run: |
-          TAG_BODY=$(git tag --list "${{ github.ref_name }}" --format="%(contents:body)")
-          echo "TAG_BODY<<EOF" >> $GITHUB_ENV
-          echo "$TAG_BODY" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          TAG_BODY=$(git tag --list --format='%(contents:body)' "$GITHUB_REF_NAME")
+          {
+            echo "TAG_BODY<<EOF";
+            echo "$TAG_BODY";
+            echo "EOF";
+          } >> "$GITHUB_ENV"
 
-          IS_PRERELEASE=$(if [[ "${{ github.ref_name }}" == *"-"* ]]; then echo "true"; else echo "false"; fi)
-          echo "IS_PRERELEASE=$IS_PRERELEASE" >> $GITHUB_OUTPUT
+          echo "IS_PRERELEASE=$(if [[ "$GITHUB_REF_NAME" == *-* ]]; then echo "true"; else echo "false"; fi)" >> "$GITHUB_OUTPUT"
 
-          IS_MARKER=$(git tag --list "${{ github.ref_name }}" --format="%(trailers:key=Marker,valueonly=true,separator=)")
-          echo "IS_MARKER=${IS_MARKER:-false}" >> $GITHUB_OUTPUT
+          IS_MARKER="$(git tag --list --format='%(trailers:key=Marker,valueonly=true)' "$GITHUB_REF_NAME")"
+          echo "IS_MARKER=${IS_MARKER:-false}" >> "$GITHUB_OUTPUT"
         shell: bash
       - name: Create Release
         if: ${{ steps.variables.outputs.IS_MARKER == 'false' }}

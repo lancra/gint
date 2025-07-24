@@ -9,9 +9,9 @@ internal sealed class PublishTarget : ITarget
 
     public void Setup(Bullseye.Targets targets)
         => targets.Add(
-            BuildTargets.Publish,
+            TargetKeys.Publish,
             "Publishes projects to a directory as executables for release.",
-            dependsOn: [BuildTargets.Dotnet],
+            dependsOn: [TargetKeys.Dotnet],
             forEach: Projects,
             Execute);
 
