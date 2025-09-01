@@ -24,7 +24,7 @@ public class CleanOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);

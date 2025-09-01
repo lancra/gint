@@ -47,7 +47,7 @@ public class ChangeAccessorFacts
                         file.Path == path);
 
             // Act
-            var changesResult = await sut.Get(new(pathspec), default);
+            var changesResult = await sut.Get(new(pathspec), TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Empty(changesResult.Message);
@@ -74,7 +74,7 @@ public class ChangeAccessorFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var changesResult = await sut.Get(new(pathspec), default);
+            var changesResult = await sut.Get(new(pathspec), TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Null(changesResult.Changes);
@@ -93,7 +93,7 @@ public class ChangeAccessorFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var changesResult = await sut.Get(new(pathspec), default);
+            var changesResult = await sut.Get(new(pathspec), TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Null(changesResult.Changes);

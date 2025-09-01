@@ -11,7 +11,7 @@ internal static class GitCommandExtensions
     {
         var argumentSegments = arguments.Split(' ');
         mocker.GetMock<IGitCommand>()
-            .Setup(command => command.Read(default, argumentSegments))
+            .Setup(command => command.Read(TestContext.Current.CancellationToken, argumentSegments))
             .ReturnsAsync(result)
             .Verifiable();
     }
@@ -22,7 +22,7 @@ internal static class GitCommandExtensions
         result ??= GitCommandResultCreator.CreateRunSuccess();
 
         mocker.GetMock<IGitCommand>()
-            .Setup(command => command.Run(default, argumentSegments))
+            .Setup(command => command.Run(TestContext.Current.CancellationToken, argumentSegments))
             .ReturnsAsync(result)
             .Verifiable();
     }

@@ -26,7 +26,7 @@ public class PatchOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -46,7 +46,7 @@ public class PatchOperationFacts
             _mocker.GetMock<IOperation>()
                 .Setup(operation => operation.Execute(
                     It.Is<OperationContext>(context => true),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext innerContext, CancellationToken _)
                     => OperationResult.Command(innerContext, GitCommandResultCreator.CreateRunSuccess()))
                 .Verifiable();
@@ -55,7 +55,7 @@ public class PatchOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -75,14 +75,14 @@ public class PatchOperationFacts
             _mocker.GetMock<IOperation>()
                 .Setup(operation => operation.Execute(
                     It.Is<OperationContext>(context => true),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext innerContext, CancellationToken _)
                     => OperationResult.Command(innerContext, GitCommandResultCreator.CreateRunFailure()));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.False(result.Succeeded);
@@ -102,7 +102,7 @@ public class PatchOperationFacts
             _mocker.GetMock<IOperation>()
                 .Setup(operation => operation.Execute(
                     It.Is<OperationContext>(context => true),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext innerContext, CancellationToken _)
                     => OperationResult.Command(innerContext, GitCommandResultCreator.CreateRunSuccess()));
 
@@ -110,7 +110,7 @@ public class PatchOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.False(result.Succeeded);

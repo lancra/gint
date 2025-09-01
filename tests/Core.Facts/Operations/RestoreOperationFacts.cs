@@ -25,7 +25,7 @@ public class RestoreOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -44,7 +44,7 @@ public class RestoreOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -63,7 +63,7 @@ public class RestoreOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);

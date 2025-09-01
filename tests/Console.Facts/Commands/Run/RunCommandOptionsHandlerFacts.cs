@@ -30,13 +30,13 @@ public class RunCommandOptionsHandlerFacts
                         It.Is<RunPromptContext>(context =>
                             context.Pathspec.Pattern == options.Pathspec &&
                             context.Scope == OperationScope.All),
-                        default))
+                        TestContext.Current.CancellationToken))
                 .ReturnsAsync([]);
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            await sut.Handle(options, default);
+            await sut.Handle(options, TestContext.Current.CancellationToken);
 
             // Assert
             _mocker.Verify();
@@ -57,13 +57,13 @@ public class RunCommandOptionsHandlerFacts
                         It.Is<RunPromptContext>(context =>
                             context.Pathspec.Pattern == options.Pathspec &&
                             context.Scope == OperationScope.All),
-                        default))
+                        TestContext.Current.CancellationToken))
                 .ReturnsAsync([]);
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var exitCode = await sut.Handle(options, default);
+            var exitCode = await sut.Handle(options, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(ExitCode.Success, exitCode);

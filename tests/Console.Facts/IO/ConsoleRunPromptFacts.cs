@@ -44,19 +44,19 @@ public class ConsoleRunPromptFacts : IDisposable
             var context = new RunPromptContext(new("."), OperationScope.All);
 
             _mocker.GetMock<IChangeAccessor>()
-                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup([])));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var results = await sut.Open(context, default);
+            var results = await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Empty(results);
             _mocker.GetMock<IOperation>()
                 .Verify(
-                    operation => operation.Execute(It.IsAny<OperationContext>(), default),
+                    operation => operation.Execute(It.IsAny<OperationContext>(), TestContext.Current.CancellationToken),
                     Times.Never());
         }
 
@@ -68,19 +68,19 @@ public class ConsoleRunPromptFacts : IDisposable
 
             var expectedMessage = "Foo bar baz.";
             _mocker.GetMock<IChangeAccessor>()
-                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Error(expectedMessage));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var results = await sut.Open(context, default);
+            var results = await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Empty(results);
             _mocker.GetMock<IOperation>()
                 .Verify(
-                    operation => operation.Execute(It.IsAny<OperationContext>(), default),
+                    operation => operation.Execute(It.IsAny<OperationContext>(), TestContext.Current.CancellationToken),
                     Times.Never());
 
             var actualMessage = Assert.Single(_console.ErrorLines);
@@ -95,7 +95,7 @@ public class ConsoleRunPromptFacts : IDisposable
 
             var changes = ChangesCreator.CreateGroup(ChangesCreator.CreateFile());
             _mocker.GetMock<IChangeAccessor>()
-                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(changes));
 
             _mocker.GetMock<IOperationAccessor>()
@@ -114,14 +114,14 @@ public class ConsoleRunPromptFacts : IDisposable
                         operationContext.Pathspec == context.Pathspec &&
                         operationContext.Scope == context.Scope &&
                         operationContext.Changes == changes),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _) => OperationResult.Terminal(operationContext))
                 .Verifiable();
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var results = await sut.Open(context, default);
+            var results = await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             _mocker.Verify();
@@ -138,7 +138,7 @@ public class ConsoleRunPromptFacts : IDisposable
 
             var changes = ChangesCreator.CreateGroup(ChangesCreator.CreateFile());
             _mocker.GetMock<IChangeAccessor>()
-                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(changes))
                 .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup([])));
 
@@ -158,7 +158,7 @@ public class ConsoleRunPromptFacts : IDisposable
                         operationContext.Pathspec == context.Pathspec &&
                         operationContext.Scope == context.Scope &&
                         operationContext.Changes == changes),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _)
                     => OperationResult.Command(operationContext, GitCommandResultCreator.CreateRunSuccess()))
                 .Verifiable();
@@ -166,7 +166,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var sut = CreateSystemUnderTest();
 
             // Act
-            var results = await sut.Open(context, default);
+            var results = await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             var result = Assert.Single(results);
@@ -195,7 +195,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var changesUntracked = ChangesCreator.CreateGroup(fileUntracked);
             var changesUnstaged = ChangesCreator.CreateGroup(fileUnstaged);
             _mocker.GetMock<IChangeAccessor>()
-                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(changesStaged))
                 .ReturnsAsync(ChangeGroupResult.Success(changesUntracked))
                 .ReturnsAsync(ChangeGroupResult.Success(changesUnstaged));
@@ -216,7 +216,7 @@ public class ConsoleRunPromptFacts : IDisposable
                     It.Is<OperationContext>(operationContext =>
                         operationContext.Runspec.Descriptor == OperationDescriptor.IntendToAdd ||
                         operationContext.Runspec.Descriptor == OperationDescriptor.Restore),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _)
                     => OperationResult.Command(operationContext, GitCommandResultCreator.CreateRunSuccess()))
                 .Verifiable();
@@ -224,7 +224,7 @@ public class ConsoleRunPromptFacts : IDisposable
             _mocker.GetMock<IOperation>()
                 .Setup(operation => operation.Execute(
                     It.Is<OperationContext>(operationContext => operationContext.Runspec.Descriptor == OperationDescriptor.Quit),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _)
                     => OperationResult.Terminal(operationContext))
                 .Verifiable();
@@ -232,7 +232,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var sut = CreateSystemUnderTest();
 
             // Act
-            var results = await sut.Open(context, default);
+            var results = await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(3, results.Count);
@@ -246,7 +246,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var context = new RunPromptContext(new("."), OperationScope.All);
 
             _mocker.GetMock<IChangeAccessor>()
-                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup(ChangesCreator.CreateFile())));
 
             _mocker.GetMock<IOperationAccessor>()
@@ -256,13 +256,13 @@ public class ConsoleRunPromptFacts : IDisposable
             _console.AddInputLines("q");
 
             _mocker.GetMock<IOperation>()
-                .Setup(operation => operation.Execute(It.IsAny<OperationContext>(), default))
+                .Setup(operation => operation.Execute(It.IsAny<OperationContext>(), TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _) => OperationResult.Terminal(operationContext));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            await sut.Open(context, default);
+            await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             var outputLine = Assert.Single(_console.OutputLines);
@@ -276,7 +276,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var context = new RunPromptContext(new("."), OperationScope.File, new(2, 4));
 
             _mocker.GetMock<IChangeAccessor>()
-                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup(ChangesCreator.CreateFile())));
 
             _mocker.GetMock<IOperationAccessor>()
@@ -286,13 +286,13 @@ public class ConsoleRunPromptFacts : IDisposable
             _console.AddInputLines("q");
 
             _mocker.GetMock<IOperation>()
-                .Setup(operation => operation.Execute(It.IsAny<OperationContext>(), default))
+                .Setup(operation => operation.Execute(It.IsAny<OperationContext>(), TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _) => OperationResult.Terminal(operationContext));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            await sut.Open(context, default);
+            await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             var outputLine = Assert.Single(_console.OutputLines);
@@ -306,7 +306,7 @@ public class ConsoleRunPromptFacts : IDisposable
             var context = new RunPromptContext(new("."), OperationScope.All);
 
             _mocker.GetMock<IChangeAccessor>()
-                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .Setup(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(ChangesCreator.CreateGroup(ChangesCreator.CreateFile())));
 
             _mocker.GetMock<IOperationAccessor>()
@@ -316,13 +316,13 @@ public class ConsoleRunPromptFacts : IDisposable
             _console.AddInputLines("z", "a", "q+", "d++", "d_", "q");
 
             _mocker.GetMock<IOperation>()
-                .Setup(operation => operation.Execute(It.IsAny<OperationContext>(), default))
+                .Setup(operation => operation.Execute(It.IsAny<OperationContext>(), TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _) => OperationResult.Terminal(operationContext));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            await sut.Open(context, default);
+            await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(5, _console.ErrorLines.Count);
@@ -354,7 +354,7 @@ public class ConsoleRunPromptFacts : IDisposable
                     path: "bar.txt"));
 
             _mocker.GetMock<IChangeAccessor>()
-                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, default))
+                .SetupSequence(changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken))
                 .ReturnsAsync(ChangeGroupResult.Success(changesUntracked))
                 .ReturnsAsync(ChangeGroupResult.Success(changesAdded));
 
@@ -371,7 +371,7 @@ public class ConsoleRunPromptFacts : IDisposable
             _mocker.GetMock<IOperation>()
                 .Setup(operation => operation.Execute(
                     It.Is<OperationContext>(operationContext => operationContext.Runspec.Descriptor == OperationDescriptor.Break),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _)
                     => OperationResult.Derived(
                         operationContext,
@@ -390,14 +390,14 @@ public class ConsoleRunPromptFacts : IDisposable
             _mocker.GetMock<IOperation>()
                 .Setup(operation => operation.Execute(
                     It.Is<OperationContext>(operationContext => operationContext.Runspec.Descriptor == OperationDescriptor.Quit),
-                    default))
+                    TestContext.Current.CancellationToken))
                 .ReturnsAsync((OperationContext operationContext, CancellationToken _)
                     => OperationResult.Terminal(operationContext));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var results = await sut.Open(context, default);
+            var results = await sut.Open(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(2, results.Count);
@@ -406,7 +406,9 @@ public class ConsoleRunPromptFacts : IDisposable
             Assert.True(breakResult.Wrote);
 
             _mocker.GetMock<IChangeAccessor>()
-                .Verify(changeAccessor => changeAccessor.Get(context.Pathspec, default), Times.Exactly(2));
+                .Verify(
+                    changeAccessor => changeAccessor.Get(context.Pathspec, TestContext.Current.CancellationToken),
+                    Times.Exactly(2));
         }
     }
 }
