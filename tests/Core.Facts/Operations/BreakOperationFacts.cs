@@ -23,7 +23,7 @@ public class BreakOperationFacts
                 promptContext.Counter != null &&
                 promptContext.Counter.Current == expectedCounter &&
                 promptContext.Counter.Total == totalFiles),
-            default))
+            TestContext.Current.CancellationToken))
         .ReturnsAsync(results)
         .Verifiable();
 
@@ -46,7 +46,7 @@ public class BreakOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -72,7 +72,7 @@ public class BreakOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.False(result.Succeeded);
@@ -94,13 +94,13 @@ public class BreakOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
             _mocker.GetMock<IRunPrompt>()
                 .Verify(
-                    prompt => prompt.Open(It.IsAny<RunPromptContext>(), default),
+                    prompt => prompt.Open(It.IsAny<RunPromptContext>(), TestContext.Current.CancellationToken),
                     Times.Exactly(2));
         }
 
@@ -124,14 +124,14 @@ public class BreakOperationFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Execute(context, default);
+            var result = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(result.Succeeded);
             Assert.True(result.Exit);
             _mocker.GetMock<IRunPrompt>()
                 .Verify(
-                    prompt => prompt.Open(It.IsAny<RunPromptContext>(), default),
+                    prompt => prompt.Open(It.IsAny<RunPromptContext>(), TestContext.Current.CancellationToken),
                     Times.Once);
         }
     }

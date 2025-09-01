@@ -14,8 +14,6 @@
     </PackageReference>
     <PackageReference Include="Moq" />
     <PackageReference Include="Moq.AutoMock" />
-    <PackageReference Include="xunit" />
-    <Using Include="Xunit" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
@@ -33,6 +31,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="xunit.v3" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

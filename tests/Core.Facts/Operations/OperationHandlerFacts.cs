@@ -24,7 +24,7 @@ public class OperationHandlerFacts
 
             var expectedResult = OperationResult.NoOperation(context);
             var mockOperation = new Mock<IInternalOperation>();
-            mockOperation.Setup(operation => operation.Execute(context, default))
+            mockOperation.Setup(operation => operation.Execute(context, TestContext.Current.CancellationToken))
                 .ReturnsAsync(expectedResult);
 
             var serviceProvider = new ServiceCollection()
@@ -35,7 +35,7 @@ public class OperationHandlerFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var actualResult = await sut.Execute(context, default);
+            var actualResult = await sut.Execute(context, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(expectedResult, actualResult);
@@ -55,7 +55,7 @@ public class OperationHandlerFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var exception = await Record.ExceptionAsync(async () => await sut.Execute(context, default));
+            var exception = await Record.ExceptionAsync(async () => await sut.Execute(context, TestContext.Current.CancellationToken));
 
             // Assert
             Assert.NotNull(exception);

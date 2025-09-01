@@ -21,13 +21,13 @@ public class GitCommandFacts
             string[] arguments = ["add", "foo.txt"];
 
             _mocker.GetMock<ICommand>()
-                .Setup(command => command.Read("git", arguments, default))
+                .Setup(command => command.Read("git", arguments, TestContext.Current.CancellationToken))
                 .ReturnsAsync((string.Empty, string.Empty));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Read(default, arguments);
+            var result = await sut.Read(TestContext.Current.CancellationToken, arguments);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -41,13 +41,13 @@ public class GitCommandFacts
             string[] arguments = ["add", "foo.txt"];
 
             _mocker.GetMock<ICommand>()
-                .Setup(command => command.Read("git", arguments, default))
+                .Setup(command => command.Read("git", arguments, TestContext.Current.CancellationToken))
                 .ReturnsAsync(("foo\nbar\nbaz", string.Empty));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Read(default, arguments);
+            var result = await sut.Read(TestContext.Current.CancellationToken, arguments);
 
             // Assert
             Assert.Equal(3, result.Output.Count);
@@ -65,13 +65,13 @@ public class GitCommandFacts
             string[] arguments = ["add", "foo.txt"];
 
             _mocker.GetMock<ICommand>()
-                .Setup(command => command.Read("git", arguments, default))
+                .Setup(command => command.Read("git", arguments, TestContext.Current.CancellationToken))
                 .ReturnsAsync((default!, string.Empty));
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Read(default, arguments);
+            var result = await sut.Read(TestContext.Current.CancellationToken, arguments);
 
             // Assert
             Assert.Empty(result.Output);
@@ -85,13 +85,13 @@ public class GitCommandFacts
 
             var exception = new ExitCodeException(1);
             _mocker.GetMock<ICommand>()
-                .Setup(command => command.Read("git", arguments, default))
+                .Setup(command => command.Read("git", arguments, TestContext.Current.CancellationToken))
                 .ThrowsAsync(exception);
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Read(default, arguments);
+            var result = await sut.Read(TestContext.Current.CancellationToken, arguments);
 
             // Assert
             Assert.False(result.Succeeded);
@@ -108,7 +108,7 @@ public class GitCommandFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Run(default, ["add", "foo.txt"]);
+            var result = await sut.Run(TestContext.Current.CancellationToken, ["add", "foo.txt"]);
 
             // Assert
             Assert.True(result.Succeeded);
@@ -123,13 +123,13 @@ public class GitCommandFacts
 
             var exception = new ExitCodeException(1);
             _mocker.GetMock<ICommand>()
-                .Setup(command => command.Run("git", arguments, default))
+                .Setup(command => command.Run("git", arguments, TestContext.Current.CancellationToken))
                 .ThrowsAsync(exception);
 
             var sut = CreateSystemUnderTest();
 
             // Act
-            var result = await sut.Run(default, arguments);
+            var result = await sut.Run(TestContext.Current.CancellationToken, arguments);
 
             // Assert
             Assert.False(result.Succeeded);
