@@ -1,4 +1,5 @@
 <Solution>
+
   <Folder Name="/Solution Items/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />
@@ -12,10 +13,12 @@
     <File Path="README.md" />
     <File Path="stylecop.json" />
   </Folder>
+
   <Folder Name="/src/">
     <Project Path="src/Console/Gint.Console.csproj" />
     <Project Path="src/Core/Gint.Core.csproj" />
   </Folder>
+
   <Folder Name="/tests/" Id="f3c42490-3ffd-497f-bbdd-3219dd740abf">
     <File Path="tests/Directory.Build.props" />
     <File Path="tests/TestingSuppressions.cs" />
@@ -24,7 +27,9 @@
     <Project Path="tests/Core.Facts/Gint.Core.Facts.csproj" />
     <Project Path="tests/Testbed/Gint.Testbed.csproj" />
   </Folder>
+
   <Folder Name="/tools/">
     <Project Path="tools/Dev/Gint.Dev.csproj" />
   </Folder>
+
 </Solution>
