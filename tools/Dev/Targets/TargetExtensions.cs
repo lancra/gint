@@ -1,3 +1,4 @@
+using Gint.Dev.Targets.Build;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gint.Dev.Targets;
@@ -5,20 +6,20 @@ namespace Gint.Dev.Targets;
 internal static class TargetExtensions
 {
     public static IServiceCollection AddTargets(this IServiceCollection services)
-    {
-        var serviceType = typeof(ITarget);
-        var implementationTypes = serviceType.Assembly.GetTypes()
-            .Where(type => type.GetInterfaces()
-                .Any(typeInterface => typeInterface == serviceType))
-            .Where(type => type.IsClass)
-            .Where(type => !type.IsAbstract)
-            .ToArray();
+        => services.AddTarget<DefaultTarget>()
+        .AddBuildTargets()
+        .AddTarget<LintTarget>();
 
-        foreach (var implementationType in implementationTypes)
-        {
-            services.AddScoped(serviceType, implementationType);
-        }
+    private static IServiceCollection AddBuildTargets(this IServiceCollection services)
+        => services.AddTarget<BuildTarget>()
+        .AddTarget<CleanTarget>()
+        .AddTarget<CoverageTarget>()
+        .AddTarget<DotnetTarget>()
+        .AddTarget<PublishTarget>()
+        .AddTarget<SolutionTarget>()
+        .AddTarget<TestTarget>();
 
-        return services;
-    }
+    private static IServiceCollection AddTarget<TTarget>(this IServiceCollection services)
+        where TTarget : class, ITarget
+        => services.AddScoped<ITarget, TTarget>();
 }
