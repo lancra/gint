@@ -23,8 +23,8 @@ internal sealed class PublishTarget : ITarget
             await DotnetCli
                 .Run(
                     $"publish {project.Path}",
-                    $"--output {executablePath}",
-                    "--no-build")
+                    $"--runtime {runtime}",
+                    $"--output {executablePath}")
                 .ConfigureAwait(false);
         }
     }
