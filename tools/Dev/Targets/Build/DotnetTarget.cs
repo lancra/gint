@@ -11,17 +11,13 @@ internal sealed class DotnetTarget : ITarget
 
     private static async Task Execute()
     {
-        var arguments = new List<string>
-        {
-            ArtifactPaths.Solution,
-        };
-
+        var arguments = new List<string>();
         if (!EnvironmentVariables.LocalBuild.IsTruthy)
         {
             arguments.Add("/warnaserror");
         }
 
-        await DotnetCli.Run("build", [.. arguments])
+        await DotnetCli.Run($"build {ArtifactPaths.Solution}", [.. arguments])
             .ConfigureAwait(false);
     }
 }
