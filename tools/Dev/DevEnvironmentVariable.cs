@@ -13,7 +13,6 @@ internal sealed class DevEnvironmentVariable
     ];
 
     private bool _hydratedValue;
-    private string? _value;
 
     public DevEnvironmentVariable(string name)
     {
@@ -38,11 +37,11 @@ internal sealed class DevEnvironmentVariable
         {
             if (!_hydratedValue)
             {
-                _value = Environment.GetEnvironmentVariable(Name) ?? DefaultValue;
+                field = Environment.GetEnvironmentVariable(Name) ?? DefaultValue;
                 _hydratedValue = true;
             }
 
-            return _value ?? string.Empty;
+            return field ?? string.Empty;
         }
     }
 

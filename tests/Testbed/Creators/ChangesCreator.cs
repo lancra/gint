@@ -7,9 +7,7 @@ namespace Gint.Testbed.Creators;
 /// </summary>
 public static class ChangesCreator
 {
-    private static int _counter;
-
-    private static int Counter => _counter++;
+    private static int Counter => field++;
 
     /// <summary>
     /// Creates a change group for testing.

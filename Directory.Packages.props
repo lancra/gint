@@ -12,8 +12,8 @@
 
   <ItemGroup Label="Infrastructure">
     <PackageVersion Include="Ardalis.SmartEnum" Version="8.2.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
     <PackageVersion Include="SimpleExec" Version="12.0.0" />
   </ItemGroup>
 
@@ -23,16 +23,16 @@
 
   <ItemGroup Label="Testing">
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Moq.AutoMock" Version="3.5.0" />
-    <PackageVersion Include="Spectre.Console.Testing" Version="0.49.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
-    <PackageVersion Include="xunit.v3" Version="3.0.1" />
+    <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="xunit.v3" Version="3.2.1" />
   </ItemGroup>
 
   <ItemGroup Label="Tools">
-    <PackageVersion Include="Bullseye" Version="5.0.0" />
+    <PackageVersion Include="Bullseye" Version="6.0.0" />
     <PackageVersion Include="MinVer" Version="6.0.0" />
   </ItemGroup>
 
