@@ -5,7 +5,7 @@ namespace Gint.Dev;
 internal static class DotnetCli
 {
     private static readonly CompositeFormat ArgumentsFormat =
-        CompositeFormat.Parse($"{{0}} --configuration {{1}} --verbosity minimal --nologo{{2}}");
+        CompositeFormat.Parse($"{{0}} --configuration {{1}} --verbosity minimal{{2}}");
 
     public static async Task Run(string command, params string[] args)
     {

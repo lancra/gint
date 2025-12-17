@@ -20,7 +20,7 @@ internal static class ArtifactPaths
 
     public const string Tests = $"{Root}/tests";
     public const string TestCoverageReports = $"{Tests}/coverage";
-    public const string TestCoverageResults = $"{TestResults}/*/*/coverage.cobertura.xml";
+    public const string TestCoverageResults = $"{TestResults}/*/*.xml";
     public const string TestResults = $"{Tests}/results";
     public static readonly CompositeFormat TestResultFormat = CompositeFormat.Parse($"{TestResults}/{{0}}");
 }

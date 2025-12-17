@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <CodeCoverage>
+    <ModulePaths>
+      <Include>
+        <ModulePath>.*\\Gint.*\.dll$</ModulePath>
+      </Include>
+      <Exclude>
+        <ModulePath>.*Dev.dll</ModulePath>
+        <ModulePath>.*Facts.dll</ModulePath>
+        <ModulePath>.*Tests.dll</ModulePath>
+      </Exclude>
+    </ModulePaths>
+  </CodeCoverage>
+</Configuration>

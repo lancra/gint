@@ -5,7 +5,6 @@
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
     <File Path=".globalconfig" />
-    <File Path=".runsettings" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
     <File Path="global.json" />
@@ -20,9 +19,10 @@
   </Folder>
 
   <Folder Name="/tests/" Id="f3c42490-3ffd-497f-bbdd-3219dd740abf">
+    <File Path="tests/code-coverage.xml" />
     <File Path="tests/Directory.Build.props" />
     <File Path="tests/TestingSuppressions.cs" />
-    <File Path="tests/xunit.runner.json" />
+    <File Path="tests/testconfig.json" />
     <Project Path="tests/Console.Facts/Gint.Console.Facts.csproj" />
     <Project Path="tests/Core.Facts/Gint.Core.Facts.csproj" />
     <Project Path="tests/Testbed/Gint.Testbed.csproj" />

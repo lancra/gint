@@ -3,6 +3,7 @@ ardalis
 linq
 nameof
 stylecop
+testconfig
 xunit
 
 # Command Line
