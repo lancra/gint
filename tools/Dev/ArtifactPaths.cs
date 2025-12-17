@@ -20,5 +20,5 @@ internal static class ArtifactPaths
 
     public const string Tests = $"{Root}/tests";
     public const string TestResults = $"{Tests}/results";
-    public static readonly CompositeFormat TestResultFormat = CompositeFormat.Parse($"{TestResults}//{{0}}");
+    public static readonly CompositeFormat TestResultFormat = CompositeFormat.Parse($"{TestResults}/{{0}}");
 }
