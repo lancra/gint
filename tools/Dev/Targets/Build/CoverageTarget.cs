@@ -34,8 +34,8 @@ internal sealed class CoverageTarget : ITarget
         [
             "reportgenerator",
             $"-assemblyFilters:{string.Join(',', assemblyFilterPatterns)}",
-            $"-reports:{ArtifactPaths.TestResults}/*/*/coverage.cobertura.xml",
-            $"-targetdir:{ArtifactPaths.Tests}/coverage",
+            $"-reports:{ArtifactPaths.TestCoverageResults}",
+            $"-targetdir:{ArtifactPaths.TestCoverageReports}",
             $"-tag:{commitId}",
             "-reporttypes:Html",
             "-title:\"Git Interactive\"",
