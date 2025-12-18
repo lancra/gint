@@ -22,7 +22,7 @@ internal sealed class LintTarget : ITarget
             arguments.Add("--env APPLY_FIXES=all");
         }
 
-        arguments.Add("oxsecurity/megalinter-dotnet:v8");
+        arguments.Add($"oxsecurity/megalinter-dotnet:{DevEnvironmentVariable.MegaLinterVersion.ResultValue}");
 
         await SimpleExec.Command.RunAsync(DevEnvironmentVariable.ContainerRuntime.ResultValue, string.Join(' ', arguments))
             .ConfigureAwait(false);

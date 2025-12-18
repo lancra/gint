@@ -16,6 +16,9 @@ internal sealed class DevEnvironmentVariable : SmartEnum<DevEnvironmentVariable,
     public static readonly DevEnvironmentVariable LocalLint =
         new("LOCAL_LINT", "Denotes that linters should fix issues where applicable.");
 
+    public static readonly DevEnvironmentVariable MegaLinterVersion =
+        new("MEGALINTER_VERSION", "The version of the MegaLinter image to use.", "latest");
+
     private const string Prefix = "GINT_";
 
     private static readonly string[] TrueValues =
