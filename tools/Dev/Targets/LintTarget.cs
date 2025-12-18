@@ -24,7 +24,7 @@ internal sealed class LintTarget : ITarget
 
         arguments.Add("oxsecurity/megalinter-dotnet:v8");
 
-        await SimpleExec.Command.RunAsync(DevEnvironmentVariable.VirtualizationPlatform.ResultValue, string.Join(' ', arguments))
+        await SimpleExec.Command.RunAsync(DevEnvironmentVariable.ContainerRuntime.ResultValue, string.Join(' ', arguments))
             .ConfigureAwait(false);
 
         if (Directory.Exists(ArtifactPaths.LintResults))
