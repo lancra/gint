@@ -11,7 +11,7 @@ internal sealed class CleanTarget : ITarget
 
     private static async Task Execute()
     {
-        await DotnetCli.Run("clean", ArtifactPaths.Solution)
+        await DotnetCli.Run($"clean {ArtifactPaths.Solution}")
             .ConfigureAwait(false);
 
         if (Directory.Exists(ArtifactPaths.TestResults))

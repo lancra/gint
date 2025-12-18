@@ -38,10 +38,13 @@ internal sealed class TestTarget : ITarget
     private static async Task Execute(TestProject project)
         => await DotnetCli
         .Run(
-            $"test {project.Path}",
+            "test",
+            $"--project {project.Path}",
             "--no-build",
-            "--collect \"XPlat Code Coverage\"",
-            "--logger trx",
-            $"--results-directory {string.Format(null, ArtifactPaths.TestResultFormat, project.Name)}")
+            $"--results-directory {string.Format(null, ArtifactPaths.TestResultFormat, project.Name)}",
+            "--config-file tests/testconfig.json",
+            "--coverage",
+            "--coverage-output-format xml",
+            "--coverage-settings tests/code-coverage.xml")
         .ConfigureAwait(false);
 }

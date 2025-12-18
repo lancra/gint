@@ -11,4 +11,5 @@ internal static class TargetKeys
     public const string Solution = "solution";
     public const string Test = "test";
     public const string TestUnit = "test.unit";
+    public const string Variables = "variables";
 }

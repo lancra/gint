@@ -22,10 +22,9 @@ internal sealed class PublishTarget : ITarget
             var executablePath = string.Format(null, ArtifactPaths.ExecutableFormat, project.Name, runtime);
             await DotnetCli
                 .Run(
-                    "publish",
-                    project.Path,
-                    $"--output {executablePath}",
-                    "--no-build")
+                    $"publish {project.Path}",
+                    $"--runtime {runtime}",
+                    $"--output {executablePath}")
                 .ConfigureAwait(false);
         }
     }

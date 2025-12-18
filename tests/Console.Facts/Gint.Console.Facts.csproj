@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Console\Gint.Console.csproj" />
     <ProjectReference Include="..\Testbed\Gint.Testbed.csproj" />
