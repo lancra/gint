@@ -22,9 +22,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="System.CommandLine" />
-    <PackageReference Include="System.CommandLine.NamingConventionBinder" />
   </ItemGroup>
 
 </Project>

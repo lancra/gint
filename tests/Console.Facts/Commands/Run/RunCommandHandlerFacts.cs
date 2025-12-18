@@ -6,20 +6,20 @@ using Moq.AutoMock;
 
 namespace Gint.Console.Facts.Commands.Run;
 
-public class RunCommandOptionsHandlerFacts
+public class RunCommandHandlerFacts
 {
     private readonly AutoMocker _mocker = new();
 
-    private RunCommandOptionsHandler CreateSystemUnderTest()
-        => _mocker.CreateInstance<RunCommandOptionsHandler>();
+    private RunCommandHandler CreateSystemUnderTest()
+        => _mocker.CreateInstance<RunCommandHandler>();
 
-    public class TheHandleMethod : RunCommandOptionsHandlerFacts
+    public class TheHandleMethod : RunCommandHandlerFacts
     {
         [Fact]
         public async Task OpensPromptForPathspecInAllScope()
         {
             // Arrange
-            var options = new RunCommandOptions
+            var options = new RunCommandParameters
             {
                 Pathspec = "foo.txt",
             };
@@ -36,7 +36,7 @@ public class RunCommandOptionsHandlerFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            await sut.Handle(options, TestContext.Current.CancellationToken);
+            await sut.HandleAsync(options, TestContext.Current.CancellationToken);
 
             // Assert
             _mocker.Verify();
@@ -46,7 +46,7 @@ public class RunCommandOptionsHandlerFacts
         public async Task ReturnsSuccessExitCode()
         {
             // Arrange
-            var options = new RunCommandOptions
+            var options = new RunCommandParameters
             {
                 Pathspec = "foo.txt",
             };
@@ -63,7 +63,7 @@ public class RunCommandOptionsHandlerFacts
             var sut = CreateSystemUnderTest();
 
             // Act
-            var exitCode = await sut.Handle(options, TestContext.Current.CancellationToken);
+            var exitCode = await sut.HandleAsync(options, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(ExitCode.Success, exitCode);

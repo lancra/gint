@@ -2,16 +2,25 @@ using System.CommandLine;
 
 namespace Gint.Console.Commands.Run;
 
-internal sealed class RunCommand : Command<RunCommandOptions, RunCommandOptionsHandler>
+internal sealed class RunCommand : CommandBase<RunCommandParameters, RunCommandHandler>
 {
-    public RunCommand()
-        : base("run", "Runs an interactive Git session.")
+    private static readonly Argument<string> PathspecArgument =
+        new("pathspec")
+        {
+            DefaultValueFactory = _ => ".",
+            Description = "The pattern used to limit paths in Git commands.",
+        };
+
+    public RunCommand(ICommandHandler<RunCommandParameters> handler)
+        : base("run", "Runs an interactive Git session.", handler)
     {
-        AddAlias("r");
-        AddArgument(
-            new Argument<string>(
-                "pathspec",
-                getDefaultValue: () => ".",
-                description: "The pattern used to limit paths in Git commands."));
+        Aliases.Add("r");
+        Add(PathspecArgument);
     }
+
+    protected override RunCommandParameters GetParameters(ParseResult parseResult)
+        => new()
+        {
+            Pathspec = parseResult.GetValue(PathspecArgument)!,
+        };
 }
