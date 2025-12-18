@@ -12,7 +12,7 @@ internal sealed class DotnetTarget : ITarget
     private static async Task Execute()
     {
         var arguments = new List<string>();
-        if (!EnvironmentVariables.LocalBuild.IsTruthy)
+        if (!DevEnvironmentVariable.LocalBuild.IsTruthy)
         {
             arguments.Add("/warnaserror");
         }

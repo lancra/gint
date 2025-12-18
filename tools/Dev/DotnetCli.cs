@@ -19,7 +19,7 @@ internal static class DotnetCli
             null,
             ArgumentsFormat,
             command,
-            EnvironmentVariables.BuildConfiguration.Value,
+            DevEnvironmentVariable.BuildConfiguration.ResultValue,
             additionalArgumentsString);
         await SimpleExec.Command.RunAsync("dotnet", argumentsString)
             .ConfigureAwait(false);

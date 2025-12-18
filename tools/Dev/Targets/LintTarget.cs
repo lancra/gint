@@ -17,14 +17,14 @@ internal sealed class LintTarget : ITarget
             $"--volume {Directory.GetCurrentDirectory()}:/tmp/lint:rw",
         ];
 
-        if (EnvironmentVariables.LocalLint.IsTruthy)
+        if (DevEnvironmentVariable.LocalLint.IsTruthy)
         {
             arguments.Add("--env APPLY_FIXES=all");
         }
 
         arguments.Add("oxsecurity/megalinter-dotnet:v8");
 
-        await SimpleExec.Command.RunAsync(EnvironmentVariables.VirtualizationPlatform.Value, string.Join(' ', arguments))
+        await SimpleExec.Command.RunAsync(DevEnvironmentVariable.VirtualizationPlatform.ResultValue, string.Join(' ', arguments))
             .ConfigureAwait(false);
 
         if (Directory.Exists(ArtifactPaths.LintResults))
