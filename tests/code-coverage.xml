@@ -11,5 +11,6 @@
         <ModulePath>.*Tests.dll</ModulePath>
       </Exclude>
     </ModulePaths>
+    <SkipAutoProperties>True</SkipAutoProperties>
   </CodeCoverage>
 </Configuration>
